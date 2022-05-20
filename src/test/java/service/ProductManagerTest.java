@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -107,16 +108,17 @@ public class ProductManagerTest {
         Assertions.assertFalse(productExist);
     }
 
-    // Задача: Создать @TestFactory для проверки содержания продуктов в определенном магазине getShopProducts
+    // Задача: Создать тест с именем, который получает список продуктов со скидкой
+    // и проверяет скидки в каждом продукте
 
-    @TestFactory
-    Stream<DynamicTest> getShopProductsDynamicTest() {
-        return Arrays.stream(Shop.values())
-            .map(shop -> DynamicTest.dynamicTest("shopName: " + shop.name(),
-                () -> {
-                    List<Product> products = productManager.getShopProducts(ProductManagerTest.products, shop);
-                    products.forEach(product ->
-                        Assertions.assertTrue(product.getMetaInf().getShopList().contains(shop)));
-                }));
+    @Test
+    @DisplayName("Тест на получение списка продуктов со скидкой")
+    void getDiscountProductListTest() {
+        List<Product> discountProductList = productManager.getDiscountProductList(products);
+
+        discountProductList
+            .forEach(product -> Assertions.assertTrue(product.getMetaInf().isDiscount()));
     }
+
+    // Задача: Создать @TestFactory для проверки содержания продуктов в определенном магазине getShopProducts
 }

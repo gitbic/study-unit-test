@@ -9,9 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import resolver.ProductParameterResolver;
 import ru.clevertec.dto.MetaInf;
 import ru.clevertec.dto.Order;
 import ru.clevertec.dto.Product;
@@ -26,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+@ExtendWith(ProductParameterResolver.class)
 public class ProductManagerTest {
 
     static List<Product> products;
@@ -132,4 +135,17 @@ public class ProductManagerTest {
                         Assertions.assertTrue(product.getMetaInf().getShopList().contains(shop)));
                 }));
     }
+
+    // Задача: Создать ProductParameterResolver, возвращающий рандомный продукт
+    // Поставить аннотацию над классом @ExtendWith(ProductParameterResolver.class)
+    // Проверить получение продукта по имени getProductByNameTest
+
+    @Test
+    void getProductByNameNewTest(Product product) {
+        String productName = product.getName();
+        Product productByName = productManager.getProductByName(products, productName);
+
+        Assertions.assertEquals(product, productByName);
+    }
+
 }

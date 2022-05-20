@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import ru.clevertec.dto.MetaInf;
 import ru.clevertec.dto.Order;
 import ru.clevertec.dto.Product;
@@ -71,5 +72,18 @@ public class ProductManagerTest {
     void getProductByNameFailedTest() {
         Assertions.assertThrows(ProductException.class,
             () -> productManager.getProductByName(products, "yabloko"));
+    }
+
+    // Написать позитивные и негативные тесты для метода isProductExist
+    @Test
+    void isProductExistTest() {
+        boolean isAppleExist = productManager.isProductExist(products, "apple");
+        Assertions.assertTrue(isAppleExist);
+    }
+
+
+    @ParameterizedTest
+    void isProductNoExistTest() {
+        productManager.isProductExist("")
     }
 }

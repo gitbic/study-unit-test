@@ -77,12 +77,4 @@ public class ProductManagerTest {
     // Задача: Создать тест с именем, который получает список продуктов со скидкой
     // и проверяет скидки в каждом продукте
 
-    @Test
-    @DisplayName("Тест на получение списка продуктов со скидкой")
-    void getDiscountProductListTest() {
-        List<Product> discountProductList = productManager.getDiscountProductList(products);
-
-        discountProductList
-            .forEach(product -> Assertions.assertTrue(product.getMetaInf().isDiscount()));
-    }
 }

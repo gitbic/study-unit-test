@@ -5,7 +5,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,6 +22,7 @@ import ru.clevertec.util.OrderUtil;
 import ru.clevertec.util.ProductUtils;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -102,5 +106,30 @@ public class ProductManagerTest {
     void isProductNoExistTest(String productName) {
         boolean productExist = productManager.isProductExist(products, productName);
         Assertions.assertFalse(productExist);
+    }
+
+    // Задача: Создать тест с именем, который получает список продуктов со скидкой
+    // и проверяет скидки в каждом продукте
+
+    @Test
+    @DisplayName("Тест на получение списка продуктов со скидкой")
+    void getDiscountProductListTest() {
+        List<Product> discountProductList = productManager.getDiscountProductList(products);
+
+        discountProductList
+            .forEach(product -> Assertions.assertTrue(product.getMetaInf().isDiscount()));
+    }
+
+    // Задача: Создать @TestFactory для проверки содержания продуктов в определенном магазине getShopProducts
+
+    @TestFactory
+    Stream<DynamicTest> getShopProductsDynamicTest() {
+        return Arrays.stream(Shop.values())
+            .map(shop -> DynamicTest.dynamicTest("shopName: " + shop.name(),
+                () -> {
+                    List<Product> products = productManager.getShopProducts(ProductManagerTest.products, shop);
+                    products.forEach(product ->
+                        Assertions.assertTrue(product.getMetaInf().getShopList().contains(shop)));
+                }));
     }
 }

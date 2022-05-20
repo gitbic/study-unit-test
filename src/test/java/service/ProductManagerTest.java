@@ -81,26 +81,4 @@ public class ProductManagerTest {
     // Позитивный тест с @MethodSource
     // Негативный тест с @ValueSource
 
-    private static Stream<String> getValidProducts() {
-        return Stream.of(
-            "apple",
-            "orange",
-            "banana",
-            "carrot"
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("getValidProducts")
-    void isProductExistTest(String productName) {
-        boolean productExist = productManager.isProductExist(products, productName);
-        Assertions.assertTrue(productExist);
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"kefir", "smetana"})
-    void isProductNoExistTest(String productName) {
-        boolean productExist = productManager.isProductExist(products, productName);
-        Assertions.assertFalse(productExist);
-    }
 }

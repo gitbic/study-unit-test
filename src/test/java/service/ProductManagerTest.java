@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import ru.clevertec.dto.MetaInf;
 import ru.clevertec.dto.Order;
 import ru.clevertec.dto.Product;
@@ -18,6 +20,7 @@ import ru.clevertec.util.ProductUtils;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ProductManagerTest {
 
@@ -74,16 +77,30 @@ public class ProductManagerTest {
             () -> productManager.getProductByName(products, "yabloko"));
     }
 
-    // Написать позитивные и негативные тесты для метода isProductExist
-    @Test
-    void isProductExistTest() {
-        boolean isAppleExist = productManager.isProductExist(products, "apple");
-        Assertions.assertTrue(isAppleExist);
+    // Задача: Написать параметризированный тест метода isProductExist
+    // Позитивный тест с @MethodSource
+    // Негативный тест с @ValueSource
+
+    private static Stream<String> getValidProducts() {
+        return Stream.of(
+            "apple",
+            "orange",
+            "banana",
+            "carrot"
+        );
     }
 
+    @ParameterizedTest
+    @MethodSource("getValidProducts")
+    void isProductExistTest(String productName) {
+        boolean productExist = productManager.isProductExist(products, productName);
+        Assertions.assertTrue(productExist);
+    }
 
     @ParameterizedTest
-    void isProductNoExistTest() {
-        productManager.isProductExist("")
+    @ValueSource(strings = {"kefir", "smetana"})
+    void isProductNoExistTest(String productName) {
+        boolean productExist = productManager.isProductExist(products, productName);
+        Assertions.assertFalse(productExist);
     }
 }

@@ -140,12 +140,4 @@ public class ProductManagerTest {
     // Поставить аннотацию над классом @ExtendWith(ProductParameterResolver.class)
     // Проверить получение продукта по имени getProductByNameTest
 
-    @Test
-    void getProductByNameNewTest(Product product) {
-        String productName = product.getName();
-        Product productByName = productManager.getProductByName(products, productName);
-
-        Assertions.assertEquals(product, productByName);
-    }
-
 }
